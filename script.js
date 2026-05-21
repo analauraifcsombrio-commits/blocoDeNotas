@@ -17,37 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aqui, estamos procurando por um item que salvamos com a chave 'minhaNota'.
     const notaSalva = localStorage.getItem('minhaNota');
 
-    // Verificamos se encontramos alguma nota salva.
     if (notaSalva) {
-        // Se 'notaSalva' não for nulo (ou seja, existe algo salvo),
-        // nós colocamos o valor salvo de volta no nosso 'blocoDeNotas'.
         blocoDeNotas.value = notaSalva;
     }
 
-    // 3. ADICIONANDO UM 'EVENTLISTENER'
-    // ---------------------------------
-    // Agora, a parte principal: queremos fazer algo sempre que o usuário digitar.
-    // O 'addEventListener' é como um "ouvinte" que fica esperando por uma ação específica.
-    //
-    // Parâmetros do addEventListener:
-    //   - O primeiro é o TIPO DE EVENTO que queremos ouvir. 'input' é disparado
-    //     toda vez que o valor do <textarea> muda (ou seja, o usuário digita, apaga, etc).
-    //   - O segundo é a FUNÇÃO que será executada quando o evento acontecer.
-    //     Esta função é chamada de "callback".
-    blocoDeNotas.addEventListener('input', () => {
-        // 4. SALVANDO DADOS NO LOCALSTORAGE
-        // -----------------------------------
-        // Dentro da nossa função de callback, pegamos o valor atual do bloco de notas
-        // e o salvamos no localStorage.
-        // Usamos 'localStorage.setItem()' para isso.
-        //
-        // Parâmetros do setItem:
-        //   - O primeiro é a CHAVE (o "nome" do nosso dado). Usaremos a mesma chave 'minhaNota'.
-        //   - O segundo é o VALOR que queremos salvar. 'blocoDeNotas.value' contém o texto
-        //     que está atualmente na área de texto.
-        localStorage.setItem('minhaNota', blocoDeNotas.value);
+    const saveBtn = document.getElementById('saveBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
 
-        console.log("Nota salva no localStorage!"); // Uma mensagem no console para fins de depuração.
+    // Salva a nota no localStorage quando o usuário clicar em 'Salvar'
+    saveBtn.addEventListener('click', () => {
+        localStorage.setItem('minhaNota', blocoDeNotas.value);
+        // feedback simples ao usuário
+        saveBtn.textContent = 'Salvo';
+        setTimeout(() => { saveBtn.textContent = 'Salvar'; }, 1200);
+    });
+
+    // Limpa o conteúdo com confirmação quando o usuário clicar em 'Deletar'
+    deleteBtn.addEventListener('click', () => {
+        const confirmDelete = confirm('Tem certeza que deseja apagar o conteúdo?');
+        if (confirmDelete) {
+            blocoDeNotas.value = '';
+            localStorage.removeItem('minhaNota');
+        }
     });
 
 });
